@@ -31,6 +31,68 @@ type AdType =
   | "MAINTENANCE"
   | "BOAT";
 
+// Define type for Ad with all required fields
+interface Ad {
+  id: string;
+  orgId: string;
+  createdBy: string;
+  title: string;
+  description: string;
+  type: AdType;
+  price?: number | null;
+  published: boolean;
+  isDraft: boolean;
+  boosted: boolean;
+  featured: boolean;
+  boostExpiry?: Date | null;
+  featureExpiry?: Date | null;
+  status: AdStatus;
+  expiryDate?: Date | null;
+  seoTitle?: string | null;
+  seoDescription?: string | null;
+  seoSlug?: string | null;
+  categoryId?: string | null;
+  tags: string[];
+  condition?: string | null;
+  brand?: string | null;
+  model?: string | null;
+  trimEdition?: string | null;
+  manufacturedYear?: string | null;
+  modelYear?: string | null;
+  mileage?: number | null;
+  engineCapacity?: number | null;
+  fuelType?: string | null;
+  transmission?: string | null;
+  bodyType?: string | null;
+  bikeType?: string | null;
+  vehicleType?: string | null;
+  serviceType?: string | null;
+  partType?: string | null;
+  maintenanceType?: string | null;
+  name?: string | null;
+  phoneNumber?: string | null;
+  whatsappNumber?: string | null;
+  termsAndConditions?: boolean | null;
+  location?: string | null;
+  address?: string | null;
+  province?: string | null;
+  district?: string | null;
+  city?: string | null;
+  specialNote?: string | null;
+  metadata?: any;
+  createdAt: Date;
+  updatedAt: Date;
+  // Include relations
+  media?: any[];
+  category?: any;
+  creator?: any;
+  analytics?: any;
+  org?: any;
+  favorites?: any[];
+  reports?: any[];
+  shareEvents?: any[];
+}
+
 // Constants for AdStatus and AdType
 const AdStatus = {
   ACTIVE: "ACTIVE" as AdStatus,
@@ -306,7 +368,7 @@ export const list: AppRouteHandler<ListRoute> = async (c) => {
 
     // FIX: Convert string "true"/"false" to actual boolean for filterByUser
     // This handles the Zod validation issue where boolean is expected but string is received
-    let processedQuery = { ...rawQuery };
+    let processedQuery = { ...(rawQuery as Record<string, any>) };
 
     if (rawQuery.filterByUser !== undefined) {
       if (typeof rawQuery.filterByUser === "string") {
@@ -422,7 +484,7 @@ export const list: AppRouteHandler<ListRoute> = async (c) => {
     });
 
     // Format the response data to ensure it matches the expected types
-    const formattedAds = ads.map((ad) => ({
+    const formattedAds = ads.map((ad: Ad) => ({
       ...ad,
       // Ensure these fields have the correct types
       price: ad.price ?? null,
@@ -692,7 +754,7 @@ export const create: AppRouteHandler<CreateRoute> = async (c) => {
 
     // Format dates for the response and ensure metadata is an object or null
     const formattedAd = {
-      ...createdAd,
+      ...(createdAd as Ad),
       createdAt: createdAd.createdAt.toISOString(),
       updatedAt: createdAd.updatedAt.toISOString(),
       boostExpiry: createdAd.boostExpiry?.toISOString() ?? null,
@@ -785,7 +847,7 @@ export const getOne: AppRouteHandler<GetOneRoute> = async (c) => {
 
     // Format dates for the response and ensure all fields have correct types
     const formattedAd = {
-      ...ad,
+      ...(ad as Ad),
       // Ensure these fields have the correct types
       price: ad.price ?? null,
       location: ad.location ?? null,
@@ -1051,7 +1113,7 @@ export const update: AppRouteHandler<UpdateRoute> = async (c) => {
 
     // Format dates for the response
     const formattedAd = {
-      ...updatedAd,
+      ...(updatedAd as Ad),
       createdAt: updatedAd.createdAt.toISOString(),
       updatedAt: updatedAd.updatedAt.toISOString(),
       boostExpiry: updatedAd.boostExpiry?.toISOString() ?? null,

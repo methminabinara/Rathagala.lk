@@ -34,7 +34,9 @@ export const list: AppRouteHandler<ListRoute> = async (c) => {
       where: { userId: user.id },
     });
 
-    userOrganizationIds = userMemberships.map((m) => m.organizationId);
+    userOrganizationIds = userMemberships.map(
+      (m: { organizationId: string }) => m.organizationId
+    );
 
     if (userOrganizationIds.length === 0) {
       return c.json(

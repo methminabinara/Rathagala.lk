@@ -18,8 +18,8 @@ export const list: AppRouteHandler<ListRoute> = async (c) => {
 
   const media = await prisma.media.findMany({
     where: {
-      uploaderId: user.id
-    }
+      uploaderId: user.id,
+    },
   });
 
   return c.json(media, HttpStatusCodes.OK);
@@ -40,7 +40,7 @@ export const save: AppRouteHandler<SaveRoute> = async (c) => {
   }
 
   const createdMedia = await prisma.media.create({
-    data: { ...mediaDetails, uploaderId: user.id }
+    data: { ...(mediaDetails as any), uploaderId: user.id },
   });
 
   return c.json(createdMedia, HttpStatusCodes.CREATED);
@@ -59,7 +59,7 @@ export const getOne: AppRouteHandler<GetOneRoute> = async (c) => {
   }
 
   const media = await prisma.media.findUnique({
-    where: { id: mediaId, uploaderId: user.id }
+    where: { id: mediaId, uploaderId: user.id },
   });
 
   if (!media) {
@@ -85,7 +85,7 @@ export const remove: AppRouteHandler<RemoveRoute> = async (c) => {
   }
 
   const deletedMedia = await prisma.media.delete({
-    where: { id: mediaId, uploaderId: user.id }
+    where: { id: mediaId, uploaderId: user.id },
   });
 
   return c.json(deletedMedia, HttpStatusCodes.OK);
