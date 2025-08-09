@@ -12,7 +12,50 @@ import {
   RemoveRoute,
 } from "./ad.routes";
 import { QueryParams } from "./ad.schemas";
-import { AdStatus, AdType } from "@prisma/client";
+
+// Define AdStatus and AdType types locally instead of importing from @prisma/client
+type AdStatus = "ACTIVE" | "EXPIRED" | "DRAFT" | "PENDING_REVIEW" | "REJECTED";
+type AdType =
+  | "CAR"
+  | "VAN"
+  | "MOTORCYCLE"
+  | "BICYCLE"
+  | "THREE_WHEEL"
+  | "BUS"
+  | "LORRY"
+  | "HEAVY_DUTY"
+  | "TRACTOR"
+  | "AUTO_SERVICE"
+  | "RENTAL"
+  | "AUTO_PARTS"
+  | "MAINTENANCE"
+  | "BOAT";
+
+// Constants for AdStatus and AdType
+const AdStatus = {
+  ACTIVE: "ACTIVE" as AdStatus,
+  EXPIRED: "EXPIRED" as AdStatus,
+  DRAFT: "DRAFT" as AdStatus,
+  PENDING_REVIEW: "PENDING_REVIEW" as AdStatus,
+  REJECTED: "REJECTED" as AdStatus,
+};
+
+const AdType = {
+  CAR: "CAR" as AdType,
+  VAN: "VAN" as AdType,
+  MOTORCYCLE: "MOTORCYCLE" as AdType,
+  BICYCLE: "BICYCLE" as AdType,
+  THREE_WHEEL: "THREE_WHEEL" as AdType,
+  BUS: "BUS" as AdType,
+  LORRY: "LORRY" as AdType,
+  HEAVY_DUTY: "HEAVY_DUTY" as AdType,
+  TRACTOR: "TRACTOR" as AdType,
+  AUTO_SERVICE: "AUTO_SERVICE" as AdType,
+  RENTAL: "RENTAL" as AdType,
+  AUTO_PARTS: "AUTO_PARTS" as AdType,
+  MAINTENANCE: "MAINTENANCE" as AdType,
+  BOAT: "BOAT" as AdType,
+};
 
 // ---- List Ads Handler ----
 // export const list: AppRouteHandler<ListRoute> = async (c) => {
